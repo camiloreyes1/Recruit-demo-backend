@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "dgSpecHash": "lHB4f1y0kXI=",
+  "success": true,
+  "projectFilePath": "/Users/camil/Desktop/Personal Projects/March/Recruits.api/Recruits.api.csproj",
+  "expectedPackageFiles": [
+    "/Users/camil/.nuget/packages/elasticsearch.net/7.17.5/elasticsearch.net.7.17.5.nupkg.sha512",
+    "/Users/camil/.nuget/packages/microsoft.aspnetcore.openapi/9.0.3/microsoft.aspnetcore.openapi.9.0.3.nupkg.sha512",
+    "/Users/camil/.nuget/packages/microsoft.csharp/4.6.0/microsoft.csharp.4.6.0.nupkg.sha512",
+    "/Users/camil/.nuget/packages/microsoft.openapi/1.6.17/microsoft.openapi.1.6.17.nupkg.sha512",
+    "/Users/camil/.nuget/packages/nest/7.17.5/nest.7.17.5.nupkg.sha512",
+    "/Users/camil/.nuget/packages/system.buffers/4.5.1/system.buffers.4.5.1.nupkg.sha512",
+    "/Users/camil/.nuget/packages/system.diagnostics.diagnosticsource/5.0.0/system.diagnostics.diagnosticsource.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
