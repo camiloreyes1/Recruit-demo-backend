@@ -15,5 +15,6 @@ namespace Recruits.api.Models
         public string University { get; set; }
         public string Major { get; set; }
         public double Gpa { get; set; }
+        public string Skills { get; set; }
     }
 }
