@@ -1,37 +1,61 @@
 using System;
-using Elasticsearch.Net; // Provides low-level Elasticsearch client
-using Nest;              // Provides high-level Elasticsearch client
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Nest;
+using Recruits.api.Interfaces; // Provides high-level Elasticsearch client
+using Recruits.api.Models;
 
 namespace Recruits.api.Services
 {
-    // This service handles communication with the Elastic DB
-    public class RecruitService
+    // Implements IRecruitService, providing functionality for recruit operations
+    public class RecruitService : IRecruitService
     {
         private readonly ElasticClient _client;
 
-         public RecruitService()
+        // Constructor: Initializes the connection to Elasticsearch
+        public RecruitService()
         {
-            //Define connection settings for  
-            var settings = new ConnectionSettings(new Uri("http://localhost:9200"))//URL of server
-            .DefaultIndex("demo"); ; // Sets the default index (like a database table in SQL)
-
-            // Create an ElasticClient to interact with Elastic
-            _client = new ElasticClient(settings);
-
+            // Connection settings for the Elasticsearch client
+            var settings = new ConnectionSettings(new Uri("http://localhost:9200"))
+                .DefaultIndex("recruits"); // Sets the default index to "recruits"
+            _client = new ElasticClient(settings); // Creates the Elasticsearch client
         }
 
-        //This method adds or updates a document (record) in Elasticsearch
-        public void IndexDocument<T>(T document) where T: class
+        // Searches for recruits in Elasticsearch using a query
+        public async Task<IEnumerable<Recruit>> SearchRecruitsAsync(string query)
         {
-            //Index (store) the document in Elasticsearch
-            var response = _client.IndexDocument(document);
+            // Sends a search request to Elasticsearch
+            var response = await _client.SearchAsync<Recruit>(s => s
+                .Query(q => q.QueryString(d => d.Query(query)))); // Uses QueryString for flexible searches
 
-            //If the operation fails, throw an exception wiht details
-            if(response.IsValid) {
-                throw new Exception($"Failed to index document: {response.OriginalException}");
+            // Checks if the response is valid
+            if (!response.IsValid)
+            {
+                // Throws an exception if the search fails
+                throw new Exception($"Elasticsearch search error: {response.OriginalException.Message}");
+            }
+
+            // Returns the list of recruits from the response
+            return response.Documents;
+        }
+
+        // Adds a new recruit to the Elasticsearch index
+        public async Task AddRecruitAsync(Recruit recruit)
+        {
+            // Sends a request to Elasticsearch to index (store) the recruit document
+            var response = await _client.IndexDocumentAsync(recruit);
+
+            // Checks if the response is valid
+            if (!response.IsValid)
+            {
+                // Throws an exception if the indexing fails
+                throw new Exception($"Failed to add recruit: {response.OriginalException.Message}");
             }
         }
 
-        
+        public Task<IEnumerable<Recruit>> SeachRecruitsAsync(string query)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
